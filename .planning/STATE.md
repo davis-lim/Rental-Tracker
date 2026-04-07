@@ -9,8 +9,8 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 
 ## Current Status
 
-**Phase:** Pre-execution (initialization complete)
-**Next action:** Run `/gsd-plan-phase 1` to create the Phase 1 execution plan
+**Phase:** Phase 1 planned — ready to execute
+**Next action:** Run `/gsd-execute-phase 1` to build the scaffold
 
 ## Active Context
 
