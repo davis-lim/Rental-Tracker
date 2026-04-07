@@ -9,6 +9,7 @@
     "dev:client": "vite",
     "start": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "build": "vite build",
+    "seed": "node server/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
