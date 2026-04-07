@@ -89,10 +89,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PROP-01..04 | Phase 1 | Pending |
-| TENT-01..05 | Phase 1 | Pending |
+| PROP-01..04 | Phase 2 | Pending |
+| TENT-01..05 | Phase 2 | Pending |
 | DATA-01..03 | Phase 1 | Pending |
-| MORT-01..03 | Phase 2 | Pending |
+| MORT-01..03 | Phase 3 | Pending |
 | RENT-01..06 | Phase 3 | Pending |
 | MORT-04..06 | Phase 3 | Pending |
 | DASH-01..04 | Phase 4 | Pending |
