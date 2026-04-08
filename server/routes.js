@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import propertiesRouter from './routes/properties.js';
+import tenantsRouter from './routes/tenants.js';
 
 const router = Router();
 
@@ -11,8 +12,10 @@ router.get('/health', (req, res) => {
 // Properties CRUD
 router.use('/properties', propertiesRouter);
 
-// Placeholder route groups — will be filled in Phases 2-4
-// router.use('/tenants', tenantsRouter);
+// Tenants CRUD
+router.use('/tenants', tenantsRouter);
+
+// Placeholder route groups — will be filled in Phases 3-4
 // router.use('/mortgages', mortgagesRouter);
 // router.use('/rent-payments', rentPaymentsRouter);
 // router.use('/mortgage-payments', mortgagePaymentsRouter);
