@@ -6,7 +6,7 @@ Six phases take this from an empty directory to a fully working local rental tra
 
 ## Phases
 
-- [ ] **Phase 1: Scaffold** — Project structure, dev environment, DB init, and app shell
+- [x] **Phase 1: Scaffold** — Project structure, dev environment, DB init, and app shell (completed 2026-04-07)
 - [ ] **Phase 2: Properties & Tenants** — Full CRUD for properties and tenants with API + UI
 - [ ] **Phase 3: Mortgages** — Full CRUD for mortgages (lender, property, due date, amount)
 - [ ] **Phase 4: Payment Recording** — Rent and mortgage payment entry with on-time/late logic
@@ -26,14 +26,15 @@ Six phases take this from an empty directory to a fully working local rental tra
   4. A placeholder home page renders in the browser with navigation shell
 
 Plans:
-- [ ] 01-01: Initialize Node.js project, install dependencies (Express, better-sqlite3, Vite, React, React Router, concurrently), configure scripts
-- [ ] 01-02: Define and create SQLite schema (all tables + indexes), DB init module, seed utility
-- [ ] 01-03: Wire Express API skeleton (routes file, CORS, JSON middleware) + React app shell with layout/nav
+- [x] 01-01: Initialize Node.js project, install dependencies (Express, better-sqlite3, Vite, React, React Router, concurrently), configure scripts
+- [x] 01-02: Define and create SQLite schema (all tables + indexes), DB init module, seed utility
+- [x] 01-03: Wire Express API skeleton (routes file, CORS, JSON middleware) + React app shell with layout/nav
 
 ### Phase 2: Properties & Tenants
 **Goal**: User can fully manage properties and tenants — create, view, edit, delete — via the UI. Data persists in SQLite.
 **Depends on**: Phase 1
 **Requirements**: PROP-01, PROP-02, PROP-03, PROP-04, TENT-01, TENT-02, TENT-03, TENT-04, TENT-05
+**Plans:** 4 plans
 **Success Criteria** (what must be TRUE):
   1. User can create a property with address and notes; it appears in the properties list
   2. User can edit and delete a property
@@ -42,10 +43,10 @@ Plans:
   5. Deleting a property or tenant with dependents shows a warning before proceeding
 
 Plans:
-- [ ] 02-01: Properties REST API endpoints (GET all, GET one, POST, PUT, DELETE) + service layer
-- [ ] 02-02: Properties UI (list page, add/edit modal or inline form, delete confirmation)
-- [ ] 02-03: Tenants REST API endpoints (GET by property, GET one, POST, PUT, DELETE) + service layer
-- [ ] 02-04: Tenants UI (list within property view, add/edit form, delete confirmation)
+- [ ] 02-01-PLAN.md — Properties REST API: service layer + Express routes for full CRUD with cascade delete
+- [ ] 02-02-PLAN.md — Properties UI: shadcn init, 2-column card grid, add/edit modal dialog, delete confirmation
+- [ ] 02-03-PLAN.md — Tenants REST API: service layer + Express routes for full CRUD with validation
+- [ ] 02-04-PLAN.md — Tenants UI: property detail page with tenant table, add/edit modal, global /tenants page
 
 ### Phase 3: Mortgages
 **Goal**: User can fully manage mortgages — create, view, edit, delete — linking each to a property.
@@ -112,7 +113,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffold | 0/3 | Not started | - |
+| 1. Scaffold | 3/3 | Complete   | 2026-04-07 |
 | 2. Properties & Tenants | 0/4 | Not started | - |
 | 3. Mortgages | 0/2 | Not started | - |
 | 4. Payment Recording | 0/4 | Not started | - |
