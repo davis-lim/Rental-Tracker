@@ -8,7 +8,7 @@ Six phases take this from an empty directory to a fully working local rental tra
 
 - [x] **Phase 1: Scaffold** — Project structure, dev environment, DB init, and app shell (completed 2026-04-07)
 - [ ] **Phase 2: Properties & Tenants** — Full CRUD for properties and tenants with API + UI
-- [ ] **Phase 3: Mortgages** — Full CRUD for mortgages (lender, property, due date, amount)
+- [x] **Phase 3: Mortgages** — Full CRUD for mortgages (lender, property, due date, amount) (completed 2026-04-08)
 - [ ] **Phase 4: Payment Recording** — Rent and mortgage payment entry with on-time/late logic
 - [ ] **Phase 5: Dashboard** — Current month overview, upcoming dues, overdue list
 - [ ] **Phase 6: History, Stats & Export** — Per-tenant/per-property history, stats, CSV export, README
@@ -58,8 +58,8 @@ Plans:
   3. Mortgage list shows linked property name
 
 Plans:
-- [ ] 03-01: Mortgages REST API (GET all, GET one, POST, PUT, DELETE) + service layer
-- [ ] 03-02: Mortgages UI (list page, add/edit form, delete confirmation)
+- [x] 03-01: Mortgages REST API (GET all, GET one, POST, PUT, DELETE) + service layer
+- [x] 03-02: Mortgages UI (list page, add/edit form, delete confirmation)
 
 ### Phase 4: Payment Recording
 **Goal**: User can record rent and mortgage payments for any month. The app correctly computes whether each payment is on time or late based on the deadline + grace period. Duplicate-entry guard works.
@@ -115,7 +115,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Scaffold | 3/3 | Complete   | 2026-04-07 |
 | 2. Properties & Tenants | 0/4 | Not started | - |
-| 3. Mortgages | 0/2 | Not started | - |
+| 3. Mortgages | 2/2 | Complete   | 2026-04-08 |
 | 4. Payment Recording | 0/4 | Not started | - |
 | 5. Dashboard | 0/2 | Not started | - |
 | 6. History, Stats & Export | 0/4 | Not started | - |

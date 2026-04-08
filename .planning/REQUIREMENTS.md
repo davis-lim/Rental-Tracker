@@ -31,9 +31,9 @@
 
 ### Mortgages
 
-- [ ] **MORT-01**: User can create a mortgage with lender name, associated property, monthly due date (day-of-month), and due amount
-- [ ] **MORT-02**: User can edit mortgage details
-- [ ] **MORT-03**: User can delete a mortgage (with cascade warning)
+- [x] **MORT-01**: User can create a mortgage with lender name, associated property, monthly due date (day-of-month), and due amount
+- [x] **MORT-02**: User can edit mortgage details
+- [x] **MORT-03**: User can delete a mortgage (with cascade warning)
 - [ ] **MORT-04**: User can record a mortgage payment for a given month (payment date, amount paid)
 - [ ] **MORT-05**: System computes mortgage on-time: paid_date ≤ due_date of that month
 - [ ] **MORT-06**: User can edit/clear a mortgage payment record
