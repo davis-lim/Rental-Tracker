@@ -1,18 +1,37 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 export default function Layout() {
+  const location = useLocation();
+  const navLinks = [
+    { to: '/properties', label: 'Properties' },
+    { to: '/tenants', label: 'Tenants' },
+    { to: '/mortgages', label: 'Mortgages' },
+    { to: '/payments', label: 'Payments' },
+    { to: '/dashboard', label: 'Dashboard' },
+  ];
+
   return (
-    <div style={{ fontFamily: 'system-ui, sans-serif', maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
-      <header style={{ borderBottom: '1px solid #ccc', padding: '1rem 0', marginBottom: '1rem' }}>
-        <h1 style={{ margin: '0 0 0.5rem 0' }}>
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>Dad's Rental Tracker</Link>
+    <div className="max-w-[1200px] mx-auto px-4 font-sans">
+      <header className="border-b border-border py-4 mb-4">
+        <h1 className="text-xl font-semibold mb-2">
+          <Link to="/" className="no-underline text-foreground hover:text-foreground">
+            Dad's Rental Tracker
+          </Link>
         </h1>
-        <nav style={{ display: 'flex', gap: '1rem' }}>
-          <Link to="/properties">Properties</Link>
-          <Link to="/tenants">Tenants</Link>
-          <Link to="/mortgages">Mortgages</Link>
-          <Link to="/payments">Payments</Link>
-          <Link to="/dashboard">Dashboard</Link>
+        <nav className="flex gap-4">
+          {navLinks.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              className={`text-sm ${
+                location.pathname.startsWith(to)
+                  ? 'text-primary font-semibold'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
       </header>
       <main>
