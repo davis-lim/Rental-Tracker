@@ -83,6 +83,7 @@ Plans:
 **Goal**: Home dashboard shows the full current-month picture: all tenants with paid/unpaid/late status, all mortgages with paid/unpaid/late status, an upcoming-dues list (next 7 days), and an overdue list.
 **Depends on**: Phase 4
 **Requirements**: DASH-01, DASH-02, DASH-03, DASH-04
+**Plans:** 2 plans
 **Success Criteria** (what must be TRUE):
   1. Dashboard shows all tenants for the current month with their rent status (paid on-time / paid late / unpaid)
   2. Dashboard shows all mortgages for the current month with their payment status
@@ -90,8 +91,8 @@ Plans:
   4. Overdue list shows rent and mortgage past due and unpaid
 
 Plans:
-- [ ] 05-01: Dashboard API endpoints (current-month summary, upcoming dues, overdue list)
-- [ ] 05-02: Dashboard UI (summary cards, status tables, upcoming/overdue sections)
+- [ ] 05-01-PLAN.md — Dashboard API endpoints (getSummary, getUpcoming, getOverdue service + three GET routes)
+- [ ] 05-02-PLAN.md — Dashboard UI (tenant/mortgage status tables, upcoming dues, overdue sections in Home.jsx)
 
 ### Phase 6: History, Stats & Export
 **Goal**: Users can review full payment history per tenant and per property, see on-time rates, export to CSV, and the README explains how to run and configure the app.
