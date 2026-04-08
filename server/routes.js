@@ -3,6 +3,7 @@ import propertiesRouter from './routes/properties.js';
 import tenantsRouter from './routes/tenants.js';
 import mortgagesRouter from './routes/mortgages.js';
 import rentPaymentsRouter from './routes/rentPayments.js';
+import mortgagePaymentsRouter from './routes/mortgagePayments.js';
 
 const router = Router();
 
@@ -23,7 +24,7 @@ router.use('/mortgages', mortgagesRouter);
 // Rent payments CRUD
 router.use('/rent-payments', rentPaymentsRouter);
 
-// Placeholder route groups — will be filled in Phase 4
-// router.use('/mortgage-payments', mortgagePaymentsRouter);
+// Mortgage payments CRUD
+router.use('/mortgage-payments', mortgagePaymentsRouter);
 
 export default router;
