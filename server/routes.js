@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import propertiesRouter from './routes/properties.js';
 import tenantsRouter from './routes/tenants.js';
+import mortgagesRouter from './routes/mortgages.js';
 
 const router = Router();
 
@@ -15,8 +16,10 @@ router.use('/properties', propertiesRouter);
 // Tenants CRUD
 router.use('/tenants', tenantsRouter);
 
-// Placeholder route groups — will be filled in Phases 3-4
-// router.use('/mortgages', mortgagesRouter);
+// Mortgages CRUD
+router.use('/mortgages', mortgagesRouter);
+
+// Placeholder route groups — will be filled in Phase 4
 // router.use('/rent-payments', rentPaymentsRouter);
 // router.use('/mortgage-payments', mortgagePaymentsRouter);
 
