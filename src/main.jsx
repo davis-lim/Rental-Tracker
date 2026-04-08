@@ -9,6 +9,7 @@ import PropertyDetailPage from './pages/PropertyDetailPage.jsx';
 import TenantsPage from './pages/TenantsPage.jsx';
 import MortgagesPage from './pages/MortgagesPage.jsx';
 import RentPaymentsPage from './pages/RentPaymentsPage.jsx';
+import MortgagePaymentsPage from './pages/MortgagePaymentsPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { path: 'tenants', element: <TenantsPage /> },
       { path: 'mortgages', element: <MortgagesPage /> },
       { path: 'payments/rent', element: <RentPaymentsPage /> },
+      { path: 'payments/mortgage', element: <MortgagePaymentsPage /> },
       { path: 'payments', element: <RentPaymentsPage /> },
       { path: 'dashboard', element: <div>Dashboard — coming in Phase 5</div> },
     ],
