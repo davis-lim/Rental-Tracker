@@ -7,6 +7,7 @@ import Home from './pages/Home.jsx';
 import PropertiesPage from './pages/PropertiesPage.jsx';
 import PropertyDetailPage from './pages/PropertyDetailPage.jsx';
 import TenantsPage from './pages/TenantsPage.jsx';
+import MortgagesPage from './pages/MortgagesPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
       { path: 'properties', element: <PropertiesPage /> },
       { path: 'properties/:id', element: <PropertyDetailPage /> },
       { path: 'tenants', element: <TenantsPage /> },
-      { path: 'mortgages', element: <div>Mortgages — coming in Phase 3</div> },
+      { path: 'mortgages', element: <MortgagesPage /> },
       { path: 'payments', element: <div>Payments — coming in Phase 4</div> },
       { path: 'dashboard', element: <div>Dashboard — coming in Phase 5</div> },
     ],
