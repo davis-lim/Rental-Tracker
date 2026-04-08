@@ -65,6 +65,7 @@ Plans:
 **Goal**: User can record rent and mortgage payments for any month. The app correctly computes whether each payment is on time or late based on the deadline + grace period. Duplicate-entry guard works.
 **Depends on**: Phase 3
 **Requirements**: RENT-01, RENT-02, RENT-03, RENT-04, RENT-05, RENT-06, MORT-04, MORT-05, MORT-06
+**Plans:** 4 plans
 **Success Criteria** (what must be TRUE):
   1. User can open the rent payment entry screen, select property → tenant → month, enter payment date and amount, and save
   2. Saved rent record shows correct on-time/late status (paid_date ≤ due_date + grace_period is on-time)
@@ -73,10 +74,10 @@ Plans:
   5. User can clear/unmark a payment record
 
 Plans:
-- [ ] 04-01: Rent payment API (GET by tenant, GET by month, POST/PUT upsert with on-time logic, DELETE) + due-date computation utility
-- [ ] 04-02: Rent payment entry UI (property → tenant → month picker, payment form, duplicate warning)
-- [ ] 04-03: Mortgage payment API (GET by mortgage, GET by month, POST/PUT with on-time logic, DELETE)
-- [ ] 04-04: Mortgage payment entry UI (mortgage selector, month picker, payment form)
+- [ ] 04-01-PLAN.md — Rent payment API: service layer (computeDueDate, computeIsOnTime, upsert) + Express routes (GET by tenant/month, POST upsert, DELETE)
+- [ ] 04-02-PLAN.md — Rent payment entry UI: property/tenant/month selectors, RentPaymentFormDialog with inline duplicate guard and clear button
+- [ ] 04-03-PLAN.md — Mortgage payment API: service layer (on-time with no grace period) + Express routes (GET by mortgage/month, POST upsert, DELETE)
+- [ ] 04-04-PLAN.md — Mortgage payment entry UI: mortgage/month selectors, MortgagePaymentFormDialog with inline duplicate guard and clear button
 
 ### Phase 5: Dashboard
 **Goal**: Home dashboard shows the full current-month picture: all tenants with paid/unpaid/late status, all mortgages with paid/unpaid/late status, an upcoming-dues list (next 7 days), and an overdue list.
