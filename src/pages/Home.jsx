@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 function StatusBadge({ status }) {
   if (status === 'paid_on_time') return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Paid On Time</Badge>;
@@ -7,9 +8,17 @@ function StatusBadge({ status }) {
   return <Badge variant="outline">Unpaid</Badge>;
 }
 
-const month = new Date().toISOString().slice(0, 7);
-const today = new Date().toISOString().slice(0, 10);
-const monthLabel = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+function localDateStr(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+const now = new Date();
+const month = localDateStr(now).slice(0, 7);
+const today = localDateStr(now);
+const monthLabel = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
 export default function Home() {
   const [summary, setSummary] = useState({ tenants: [], mortgages: [] });
@@ -17,27 +26,53 @@ export default function Home() {
   const [overdue, setOverdue] = useState([]);
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
+  const [paying, setPaying] = useState({});
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const [sumRes, upRes, ovRes] = await Promise.all([
-          fetch(`/api/dashboard/summary?month=${month}`),
-          fetch(`/api/dashboard/upcoming?month=${month}&today=${today}`),
-          fetch(`/api/dashboard/overdue?month=${month}&today=${today}`),
-        ]);
-        const [sum, up, ov] = await Promise.all([sumRes.json(), upRes.json(), ovRes.json()]);
-        setSummary(sum);
-        setUpcoming(up);
-        setOverdue(ov);
-      } catch {
-        setApiError('Could not load dashboard data. Please try again.');
-      } finally {
-        setLoading(false);
-      }
+  async function loadDashboard() {
+    try {
+      const [sumRes, upRes, ovRes] = await Promise.all([
+        fetch(`/api/dashboard/summary?month=${month}`),
+        fetch(`/api/dashboard/upcoming?month=${month}&today=${today}`),
+        fetch(`/api/dashboard/overdue?month=${month}&today=${today}`),
+      ]);
+      const [sum, up, ov] = await Promise.all([sumRes.json(), upRes.json(), ovRes.json()]);
+      setSummary(sum);
+      setUpcoming(up);
+      setOverdue(ov);
+    } catch {
+      setApiError('Could not load dashboard data. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    load();
-  }, []);
+  }
+
+  useEffect(() => { loadDashboard(); }, []);
+
+  async function handleMarkPaid(tenant) {
+    setPaying((p) => ({ ...p, [tenant.tenant_id]: true }));
+    try {
+      const res = await fetch('/api/payments/rent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tenant_id: tenant.tenant_id,
+          month,
+          paid_date: today,
+          amount_paid: Number(tenant.rent_amount),
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setApiError(err.error || 'Failed to mark as paid.');
+      } else {
+        await loadDashboard();
+      }
+    } catch {
+      setApiError('Failed to mark as paid. Please try again.');
+    } finally {
+      setPaying((p) => ({ ...p, [tenant.tenant_id]: false }));
+    }
+  }
 
   return (
     <div className="pt-8 space-y-10">
@@ -63,7 +98,8 @@ export default function Home() {
                     <th className="text-left py-2 pr-4 font-medium text-muted-foreground">Property</th>
                     <th className="text-left py-2 pr-4 font-medium text-muted-foreground">Rent</th>
                     <th className="text-left py-2 pr-4 font-medium text-muted-foreground">Due</th>
-                    <th className="text-left py-2 font-medium text-muted-foreground">Status</th>
+                    <th className="text-left py-2 pr-4 font-medium text-muted-foreground">Status</th>
+                    <th className="text-left py-2 font-medium text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -73,7 +109,19 @@ export default function Home() {
                       <td className="py-2 pr-4 text-muted-foreground">{t.property_address}</td>
                       <td className="py-2 pr-4">${Number(t.rent_amount).toFixed(2)}</td>
                       <td className="py-2 pr-4">{t.due_date}</td>
-                      <td className="py-2"><StatusBadge status={t.status} /></td>
+                      <td className="py-2 pr-4"><StatusBadge status={t.status} /></td>
+                      <td className="py-2">
+                        {t.status !== 'paid_on_time' && t.status !== 'paid_late' && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={paying[t.tenant_id]}
+                            onClick={() => handleMarkPaid(t)}
+                          >
+                            {paying[t.tenant_id] ? 'Saving…' : 'Mark Paid'}
+                          </Button>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

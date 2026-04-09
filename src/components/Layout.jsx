@@ -7,7 +7,6 @@ export default function Layout() {
     { to: '/tenants', label: 'Tenants' },
     { to: '/mortgages', label: 'Mortgages' },
     { to: '/payments', label: 'Payments' },
-    { to: '/dashboard', label: 'Dashboard' },
   ];
 
   return (
