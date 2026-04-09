@@ -8,6 +8,7 @@
     "dev:server": "node server/index.js",
     "dev:client": "vite",
     "start": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "start:prod": "node server/index.js",
     "build": "vite build",
     "seed": "node server/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
