@@ -14,7 +14,7 @@ export default function Layout() {
       <header className="border-b border-border py-4 mb-4">
         <h1 className="text-xl font-semibold mb-2">
           <Link to="/" className="no-underline text-foreground hover:text-foreground">
-            Dad's Rental Tracker
+            Lim Family's Rental Tracker
           </Link>
         </h1>
         <nav className="flex gap-4">
