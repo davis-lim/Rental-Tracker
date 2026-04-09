@@ -10,7 +10,7 @@ Six phases take this from an empty directory to a fully working local rental tra
 - [ ] **Phase 2: Properties & Tenants** — Full CRUD for properties and tenants with API + UI
 - [x] **Phase 3: Mortgages** — Full CRUD for mortgages (lender, property, due date, amount) (completed 2026-04-08)
 - [ ] **Phase 4: Payment Recording** — Rent and mortgage payment entry with on-time/late logic
-- [ ] **Phase 5: Dashboard** — Current month overview, upcoming dues, overdue list
+- [x] **Phase 5: Dashboard** — Current month overview, upcoming dues, overdue list (completed 2026-04-09)
 - [ ] **Phase 6: History, Stats & Export** — Per-tenant/per-property history, stats, CSV export, README
 
 ## Phase Details
@@ -83,7 +83,7 @@ Plans:
 **Goal**: Home dashboard shows the full current-month picture: all tenants with paid/unpaid/late status, all mortgages with paid/unpaid/late status, an upcoming-dues list (next 7 days), and an overdue list.
 **Depends on**: Phase 4
 **Requirements**: DASH-01, DASH-02, DASH-03, DASH-04
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 **Success Criteria** (what must be TRUE):
   1. Dashboard shows all tenants for the current month with their rent status (paid on-time / paid late / unpaid)
   2. Dashboard shows all mortgages for the current month with their payment status
@@ -92,7 +92,7 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md — Dashboard API endpoints (getSummary, getUpcoming, getOverdue service + three GET routes)
-- [ ] 05-02-PLAN.md — Dashboard UI (tenant/mortgage status tables, upcoming dues, overdue sections in Home.jsx)
+- [x] 05-02-PLAN.md — Dashboard UI (tenant/mortgage status tables, upcoming dues, overdue sections in Home.jsx)
 
 ### Phase 6: History, Stats & Export
 **Goal**: Users can review full payment history per tenant and per property, see on-time rates, export to CSV, and the README explains how to run and configure the app.
@@ -119,5 +119,5 @@ Plans:
 | 2. Properties & Tenants | 0/4 | Not started | - |
 | 3. Mortgages | 2/2 | Complete   | 2026-04-08 |
 | 4. Payment Recording | 0/4 | Not started | - |
-| 5. Dashboard | 1/2 | In Progress|  |
+| 5. Dashboard | 2/2 | Complete   | 2026-04-09 |
 | 6. History, Stats & Export | 0/4 | Not started | - |
