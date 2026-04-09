@@ -51,7 +51,7 @@ export default function Home() {
   async function handleMarkPaid(tenant) {
     setPaying((p) => ({ ...p, [tenant.tenant_id]: true }));
     try {
-      const res = await fetch('/api/payments/rent', {
+      const res = await fetch('/api/rent-payments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
