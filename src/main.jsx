@@ -24,7 +24,6 @@ const router = createBrowserRouter([
       { path: 'payments/rent', element: <RentPaymentsPage /> },
       { path: 'payments/mortgage', element: <MortgagePaymentsPage /> },
       { path: 'payments', element: <RentPaymentsPage /> },
-      { path: 'dashboard', element: <div>Dashboard — coming in Phase 5</div> },
     ],
   },
 ]);
