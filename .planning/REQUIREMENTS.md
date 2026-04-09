@@ -40,10 +40,10 @@
 
 ### Dashboard
 
-- [ ] **DASH-01**: Dashboard shows current month summary: all tenants with paid/unpaid/late status
-- [ ] **DASH-02**: Dashboard shows current month mortgage status (paid/unpaid/late)
-- [ ] **DASH-03**: Upcoming list: payments due within the next 7 days (rent + mortgage)
-- [ ] **DASH-04**: Overdue list: past due and not paid (rent + mortgage)
+- [x] **DASH-01**: Dashboard shows current month summary: all tenants with paid/unpaid/late status
+- [x] **DASH-02**: Dashboard shows current month mortgage status (paid/unpaid/late)
+- [x] **DASH-03**: Upcoming list: payments due within the next 7 days (rent + mortgage)
+- [x] **DASH-04**: Overdue list: past due and not paid (rent + mortgage)
 
 ### History & Stats
 
