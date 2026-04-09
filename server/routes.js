@@ -4,6 +4,7 @@ import tenantsRouter from './routes/tenants.js';
 import mortgagesRouter from './routes/mortgages.js';
 import rentPaymentsRouter from './routes/rentPayments.js';
 import mortgagePaymentsRouter from './routes/mortgagePayments.js';
+import dashboardRouter from './routes/dashboard.js';
 
 const router = Router();
 
@@ -26,5 +27,8 @@ router.use('/rent-payments', rentPaymentsRouter);
 
 // Mortgage payments CRUD
 router.use('/mortgage-payments', mortgagePaymentsRouter);
+
+// Dashboard endpoints
+router.use('/dashboard', dashboardRouter);
 
 export default router;

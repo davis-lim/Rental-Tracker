@@ -8,6 +8,17 @@ function computeDueDate(deadlineDay, month) {
   return `${month}-${String(clampedDay).padStart(2, '0')}`;
 }
 
+// Add N days to a YYYY-MM-DD string, returning a YYYY-MM-DD string.
+// Uses local date arithmetic to avoid UTC timezone offset drift.
+function addDays(dateStr, days) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(y, m - 1, d + days);
+  const yy = dt.getFullYear();
+  const mm = String(dt.getMonth() + 1).padStart(2, '0');
+  const dd = String(dt.getDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}`;
+}
+
 /**
  * getSummary(month) — returns all tenants and mortgages with paid/unpaid/late status
  * for the given month (YYYY-MM).
@@ -99,10 +110,8 @@ export function getSummary(month) {
  * month: YYYY-MM, today: YYYY-MM-DD
  */
 export function getUpcoming(month, today) {
-  // Compute window end (today + 7 days)
-  const d = new Date(today + 'T00:00:00');
-  d.setDate(d.getDate() + 7);
-  const windowEnd = d.toISOString().slice(0, 10);
+  // Compute window end (today + 7 days) using local date arithmetic
+  const windowEnd = addDays(today, 7);
 
   // Determine if window crosses into next calendar month
   const nextMonth = windowEnd.slice(0, 7) !== month
@@ -195,10 +204,8 @@ export function getOverdue(month, today) {
 
   for (const t of allTenants) {
     const dueDate = computeDueDate(t.deadline_day, month);
-    // Compute grace deadline
-    const gd = new Date(dueDate + 'T00:00:00');
-    gd.setDate(gd.getDate() + t.grace_period_days);
-    const graceDeadline = gd.toISOString().slice(0, 10);
+    // Compute grace deadline using local date arithmetic (avoids UTC timezone drift)
+    const graceDeadline = addDays(dueDate, t.grace_period_days);
 
     if (graceDeadline < today) {
       const payment = db.prepare(
