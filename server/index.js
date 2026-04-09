@@ -19,7 +19,7 @@ app.use('/api', router);
 
 // Serve built React app in production
 app.use(express.static(distDir));
-app.get('*', (req, res) => {
+app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(distDir, 'index.html'));
 });
 
