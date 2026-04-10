@@ -36,9 +36,13 @@ export default function Home() {
         fetch(`/api/dashboard/overdue?month=${month}&today=${today}`),
       ]);
       const [sum, up, ov] = await Promise.all([sumRes.json(), upRes.json(), ovRes.json()]);
+      if (!sumRes.ok || !upRes.ok || !ovRes.ok) {
+        setApiError('Could not load dashboard data. Please try again.');
+        return;
+      }
       setSummary(sum);
-      setUpcoming(up);
-      setOverdue(ov);
+      setUpcoming(Array.isArray(up) ? up : []);
+      setOverdue(Array.isArray(ov) ? ov : []);
     } catch {
       setApiError('Could not load dashboard data. Please try again.');
     } finally {

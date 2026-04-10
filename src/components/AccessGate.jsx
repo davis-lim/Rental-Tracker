@@ -10,7 +10,11 @@ export default function AccessGate({ children }) {
   useEffect(() => {
     const saved = localStorage.getItem('accessCode');
     if (!saved) { setStatus('locked'); return; }
-    fetch('/api/health', { headers: { 'x-access-code': saved } })
+    fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: saved }),
+    })
       .then((r) => {
         if (r.ok) setStatus('unlocked');
         else { localStorage.removeItem('accessCode'); setStatus('locked'); }
