@@ -13,6 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import TenantFormDialog from '@/components/TenantFormDialog';
+import MortgageFormDialog from '@/components/MortgageFormDialog';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 
 export default function PropertyDetailPage() {
@@ -20,22 +21,29 @@ export default function PropertyDetailPage() {
   const [property, setProperty] = useState(null);
   const [tenants, setTenants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [mortgages, setMortgages] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
   const [editingTenant, setEditingTenant] = useState(null);
+  const [mortgageFormOpen, setMortgageFormOpen] = useState(false);
+  const [editingMortgage, setEditingMortgage] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleteType, setDeleteType] = useState('tenant');
   const [dependentCounts, setDependentCounts] = useState({ rent_payments: 0 });
   const [apiError, setApiError] = useState(null);
 
   async function fetchData() {
     try {
-      const [propRes, tenantsRes] = await Promise.all([
+      const [propRes, tenantsRes, mortRes] = await Promise.all([
         fetch(`/api/properties/${id}`),
         fetch(`/api/tenants/by-property/${id}`),
+        fetch(`/api/mortgages`),
       ]);
       const propData = await propRes.json();
       const tenantsData = await tenantsRes.json();
+      const mortData = await mortRes.json();
       setProperty(propData);
       setTenants(Array.isArray(tenantsData) ? tenantsData : []);
+      setMortgages(Array.isArray(mortData) ? mortData.filter((m) => m.property_id === parseInt(id, 10)) : []);
     } catch {
       // silently fail on initial load; error state handled inline
     } finally {
@@ -75,23 +83,50 @@ export default function PropertyDetailPage() {
     }
   }
 
+  async function handleSaveMortgage(data) {
+    try {
+      const url = editingMortgage ? `/api/mortgages/${editingMortgage.id}` : '/api/mortgages';
+      const method = editingMortgage ? 'PUT' : 'POST';
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('Save failed');
+      setMortgageFormOpen(false);
+      setEditingMortgage(null);
+      setApiError(null);
+      await fetchData();
+    } catch {
+      setApiError('Something went wrong. Please try again.');
+    }
+  }
+
   async function handleDeleteClick(tenant) {
     try {
       const res = await fetch(`/api/tenants/${tenant.id}/dependents`);
       const counts = await res.json();
       setDependentCounts(counts);
+      setDeleteType('tenant');
       setDeleteTarget(tenant);
     } catch {
       setDependentCounts({ rent_payments: 0 });
+      setDeleteType('tenant');
       setDeleteTarget(tenant);
     }
   }
 
+  async function handleDeleteMortgageClick(mortgage) {
+    setDeleteType('mortgage');
+    setDeleteTarget(mortgage);
+  }
+
   async function handleDeleteConfirm() {
     try {
-      const res = await fetch(`/api/tenants/${deleteTarget.id}?confirm=true`, {
-        method: 'DELETE',
-      });
+      const url = deleteType === 'mortgage'
+        ? `/api/mortgages/${deleteTarget.id}?confirm=true`
+        : `/api/tenants/${deleteTarget.id}?confirm=true`;
+      const res = await fetch(url, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
       setDeleteTarget(null);
       setApiError(null);
@@ -213,6 +248,51 @@ export default function PropertyDetailPage() {
         </Table>
       )}
 
+      <Separator className="my-6" />
+
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold">Mortgages</h3>
+        <Button onClick={() => { setEditingMortgage(null); setMortgageFormOpen(true); }}>Add Mortgage</Button>
+      </div>
+
+      {mortgages.length === 0 && (
+        <div className="text-center py-8">
+          <p className="text-muted-foreground">No mortgages for this property.</p>
+        </div>
+      )}
+
+      {mortgages.length > 0 && (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Lender</TableHead>
+              <TableHead>Monthly Amount</TableHead>
+              <TableHead>Due Day</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {mortgages.map((m) => (
+              <TableRow key={m.id}>
+                <TableCell className="font-medium">{m.lender}</TableCell>
+                <TableCell>${Number(m.amount).toLocaleString()}</TableCell>
+                <TableCell>Day {m.due_day}</TableCell>
+                <TableCell className="text-right">
+                  <Button variant="ghost" size="icon" aria-label="Edit mortgage"
+                    onClick={() => { setEditingMortgage(m); setMortgageFormOpen(true); }}>
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" aria-label="Delete mortgage"
+                    onClick={() => handleDeleteMortgageClick(m)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+
       <TenantFormDialog
         open={formOpen}
         onOpenChange={(open) => {
@@ -224,15 +304,25 @@ export default function PropertyDetailPage() {
         onSave={handleSave}
       />
 
+      <MortgageFormDialog
+        open={mortgageFormOpen}
+        onOpenChange={(open) => { setMortgageFormOpen(open); if (!open) setEditingMortgage(null); }}
+        mortgage={editingMortgage}
+        properties={property ? [property] : []}
+        onSave={handleSaveMortgage}
+      />
+
       <DeleteConfirmDialog
         open={!!deleteTarget}
-        onOpenChange={(open) => {
-          if (!open) setDeleteTarget(null);
-        }}
-        title="Delete tenant?"
-        description={buildDeleteDescription()}
-        cancelLabel="Keep tenant"
-        confirmLabel="Delete tenant"
+        onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}
+        title={deleteType === 'mortgage' ? 'Delete mortgage?' : 'Delete tenant?'}
+        description={
+          deleteType === 'mortgage'
+            ? 'This will permanently delete the mortgage and all its payment records. This cannot be undone.'
+            : buildDeleteDescription()
+        }
+        cancelLabel={deleteType === 'mortgage' ? 'Keep mortgage' : 'Keep tenant'}
+        confirmLabel={deleteType === 'mortgage' ? 'Delete mortgage' : 'Delete tenant'}
         onConfirm={handleDeleteConfirm}
       />
     </div>
