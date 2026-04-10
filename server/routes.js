@@ -13,6 +13,15 @@ router.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Access code auth
+router.post('/auth', (req, res) => {
+  const accessCode = process.env.ACCESS_CODE;
+  if (!accessCode) return res.json({ ok: true });
+  const { code } = req.body;
+  if (code === accessCode) return res.json({ ok: true });
+  return res.status(401).json({ error: 'Invalid access code' });
+});
+
 // Properties CRUD
 router.use('/properties', propertiesRouter);
 

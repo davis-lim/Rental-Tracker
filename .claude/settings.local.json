@@ -9,7 +9,18 @@
       "Read(//Users/davislim/.gsd/**)",
       "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs commit 'docs: add requirements, roadmap, and state' --files .planning/REQUIREMENTS.md .planning/ROADMAP.md .planning/STATE.md)",
       "Skill(gsd-code-review)",
-      "Skill(gsd-execute-phase)"
+      "Skill(gsd-execute-phase)",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs commit 'docs\\(03\\): complete mortgages UI plan summary' --files .planning/phases/03-mortgages/03-02-SUMMARY.md)",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs state advance-plan)",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs state update-progress)",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs state record-metric --phase 03-mortgages --plan 02 --duration 20 --tasks 3 --files 3)",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs state add-decision --phase 03-mortgages --summary 'Mirrored PropertiesPage + PropertyFormDialog patterns exactly for MortgagesPage — no new libraries')",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs state add-decision --phase 03-mortgages --summary 'Property dropdown uses plain HTML select with Tailwind \\(no shadcn Select needed\\)')",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs state record-session --stopped-at 'Completed 03-mortgages-02-PLAN.md')",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs roadmap update-plan-progress 3)",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs requirements mark-complete MORT-01 MORT-02 MORT-03)",
+      "Bash(node __TRACKED_VAR__/.claude/get-shit-done/bin/gsd-tools.cjs commit 'docs\\(03\\): update STATE, ROADMAP, REQUIREMENTS for phase 03 complete' --files .planning/STATE.md .planning/ROADMAP.md .planning/REQUIREMENTS.md)",
+      "Bash(npm run:*)"
     ]
   }
 }

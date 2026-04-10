@@ -9,6 +9,7 @@ import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 
 export default function PropertiesPage() {
   const [properties, setProperties] = useState([]);
+  const [mortgagesByProperty, setMortgagesByProperty] = useState({});
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [editingProperty, setEditingProperty] = useState(null);
@@ -18,9 +19,18 @@ export default function PropertiesPage() {
 
   async function fetchProperties() {
     try {
-      const res = await fetch('/api/properties');
-      const data = await res.json();
-      setProperties(data);
+      const [propRes, mortRes] = await Promise.all([
+        fetch('/api/properties'),
+        fetch('/api/mortgages'),
+      ]);
+      const [props, morts] = await Promise.all([propRes.json(), mortRes.json()]);
+      setProperties(props);
+      const grouped = {};
+      for (const m of morts) {
+        if (!grouped[m.property_id]) grouped[m.property_id] = [];
+        grouped[m.property_id].push(m);
+      }
+      setMortgagesByProperty(grouped);
     } catch {
       setApiError('Something went wrong. Please try again.');
     } finally {
@@ -128,18 +138,34 @@ export default function PropertiesPage() {
           {properties.map((property) => (
             <Card key={property.id} className="p-4">
               <div className="flex items-start justify-between">
-                <div>
+                <div className="flex-1 min-w-0">
                   <Link
                     to={`/properties/${property.id}`}
                     className="text-lg font-semibold hover:underline"
                   >
                     {property.address}
                   </Link>
-                  <div className="mt-2">
+                  <div className="mt-2 flex flex-wrap gap-2">
                     <Badge variant="secondary">
                       {property.tenant_count}{' '}
                       {property.tenant_count === 1 ? 'tenant' : 'tenants'}
                     </Badge>
+                  </div>
+                  <div className="mt-3 text-sm space-y-1">
+                    <p className="text-muted-foreground">
+                      Total rent collected:{' '}
+                      <span className="text-foreground font-medium">
+                        ${Number(property.total_rent_collected).toFixed(2)}
+                      </span>
+                    </p>
+                    {(mortgagesByProperty[property.id] || []).map((m) => (
+                      <p key={m.id} className="text-muted-foreground">
+                        Mortgage ({m.lender}):{' '}
+                        <span className="text-foreground font-medium">
+                          ${Number(m.amount).toFixed(2)}/mo
+                        </span>
+                      </p>
+                    ))}
                   </div>
                 </div>
                 <div className="flex gap-2">

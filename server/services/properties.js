@@ -6,7 +6,11 @@ const GET_ALL_SQL = `
     address,
     notes,
     created_at,
-    (SELECT COUNT(*) FROM tenants WHERE property_id = properties.id) AS tenant_count
+    (SELECT COUNT(*) FROM tenants WHERE property_id = properties.id) AS tenant_count,
+    (SELECT COALESCE(SUM(rp.amount_paid), 0)
+     FROM rent_payments rp
+     JOIN tenants t ON t.id = rp.tenant_id
+     WHERE t.property_id = properties.id) AS total_rent_collected
   FROM properties
   ORDER BY id DESC
 `;
@@ -17,7 +21,11 @@ const GET_BY_ID_SQL = `
     address,
     notes,
     created_at,
-    (SELECT COUNT(*) FROM tenants WHERE property_id = properties.id) AS tenant_count
+    (SELECT COUNT(*) FROM tenants WHERE property_id = properties.id) AS tenant_count,
+    (SELECT COALESCE(SUM(rp.amount_paid), 0)
+     FROM rent_payments rp
+     JOIN tenants t ON t.id = rp.tenant_id
+     WHERE t.property_id = properties.id) AS total_rent_collected
   FROM properties
   WHERE id = ?
 `;

@@ -10,6 +10,17 @@ import TenantsPage from './pages/TenantsPage.jsx';
 import MortgagesPage from './pages/MortgagesPage.jsx';
 import RentPaymentsPage from './pages/RentPaymentsPage.jsx';
 import MortgagePaymentsPage from './pages/MortgagePaymentsPage.jsx';
+import AccessGate from './components/AccessGate.jsx';
+
+// Inject access code header for all /api requests
+const _fetch = window.fetch.bind(window);
+window.fetch = (url, opts = {}) => {
+  if (typeof url === 'string' && url.startsWith('/api')) {
+    const code = localStorage.getItem('accessCode') || '';
+    opts = { ...opts, headers: { ...opts.headers, 'x-access-code': code } };
+  }
+  return _fetch(url, opts);
+};
 
 const router = createBrowserRouter([
   {
@@ -30,6 +41,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AccessGate>
+      <RouterProvider router={router} />
+    </AccessGate>
   </React.StrictMode>
 );

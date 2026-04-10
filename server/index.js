@@ -14,6 +14,18 @@ const distDir = path.join(__dirname, '..', 'dist');
 app.use(cors());
 app.use(express.json());
 
+// Access code protection (set ACCESS_CODE env var to enable)
+const ACCESS_CODE = process.env.ACCESS_CODE;
+if (ACCESS_CODE) {
+  app.use('/api', (req, res, next) => {
+    if (req.path === '/auth' && req.method === 'POST') return next();
+    if (req.path === '/health') return next();
+    const code = req.headers['x-access-code'];
+    if (code !== ACCESS_CODE) return res.status(401).json({ error: 'Invalid access code' });
+    next();
+  });
+}
+
 // API routes
 app.use('/api', router);
 

@@ -101,7 +101,10 @@ export function getSummary(month) {
     };
   });
 
-  return { tenants, mortgages };
+  const totalRent = tenants.reduce((sum, t) => sum + Number(t.rent_amount), 0);
+  const totalMortgage = mortgages.reduce((sum, m) => sum + Number(m.amount), 0);
+
+  return { tenants, mortgages, totalRent, totalMortgage };
 }
 
 /**

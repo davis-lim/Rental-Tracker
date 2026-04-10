@@ -1,13 +1,18 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
+const navLinks = [
+  { to: '/', label: 'Dashboard', exact: true },
+  { to: '/properties', label: 'Properties' },
+  { to: '/tenants', label: 'Tenants' },
+  { to: '/payments', label: 'Payments' },
+];
+
 export default function Layout() {
   const location = useLocation();
-  const navLinks = [
-    { to: '/properties', label: 'Properties' },
-    { to: '/tenants', label: 'Tenants' },
-    { to: '/mortgages', label: 'Mortgages' },
-    { to: '/payments', label: 'Payments' },
-  ];
+
+  function isActive({ to, exact }) {
+    return exact ? location.pathname === to : location.pathname.startsWith(to);
+  }
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 font-sans">
@@ -18,17 +23,17 @@ export default function Layout() {
           </Link>
         </h1>
         <nav className="flex gap-4">
-          {navLinks.map(({ to, label }) => (
+          {navLinks.map((link) => (
             <Link
-              key={to}
-              to={to}
+              key={link.to}
+              to={link.to}
               className={`text-sm ${
-                location.pathname.startsWith(to)
+                isActive(link)
                   ? 'text-primary font-semibold'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              {label}
+              {link.label}
             </Link>
           ))}
         </nav>

@@ -85,6 +85,24 @@ export default function Home() {
 
       {!loading && (
         <>
+          {/* Monthly totals */}
+          <section className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <div className="border rounded p-4">
+              <p className="text-xs text-muted-foreground mb-1">Rental Income (expected)</p>
+              <p className="text-lg font-semibold">${summary.totalRent?.toFixed(2) ?? '0.00'}</p>
+            </div>
+            <div className="border rounded p-4">
+              <p className="text-xs text-muted-foreground mb-1">Mortgage Expense</p>
+              <p className="text-lg font-semibold">${summary.totalMortgage?.toFixed(2) ?? '0.00'}</p>
+            </div>
+            <div className="border rounded p-4">
+              <p className="text-xs text-muted-foreground mb-1">Net (expected)</p>
+              <p className={`text-lg font-semibold ${(summary.totalRent - summary.totalMortgage) >= 0 ? 'text-green-600' : 'text-destructive'}`}>
+                ${((summary.totalRent ?? 0) - (summary.totalMortgage ?? 0)).toFixed(2)}
+              </p>
+            </div>
+          </section>
+
           {/* Tenants section */}
           <section>
             <h3 className="text-base font-semibold mb-3">Tenants</h3>
