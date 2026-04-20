@@ -27,6 +27,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [paying, setPaying] = useState({});
+  const [payingMortgage, setPayingMortgage] = useState({});
 
   async function loadDashboard() {
     try {
@@ -75,6 +76,32 @@ export default function Home() {
       setApiError('Failed to mark as paid. Please try again.');
     } finally {
       setPaying((p) => ({ ...p, [tenant.tenant_id]: false }));
+    }
+  }
+
+  async function handleMarkMortgagePaid(mortgage) {
+    setPayingMortgage((p) => ({ ...p, [mortgage.mortgage_id]: true }));
+    try {
+      const res = await fetch('/api/mortgage-payments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mortgage_id: mortgage.mortgage_id,
+          month,
+          paid_date: today,
+          amount_paid: Number(mortgage.amount),
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setApiError(err.error || 'Failed to mark as paid.');
+      } else {
+        await loadDashboard();
+      }
+    } catch {
+      setApiError('Failed to mark as paid. Please try again.');
+    } finally {
+      setPayingMortgage((p) => ({ ...p, [mortgage.mortgage_id]: false }));
     }
   }
 
@@ -164,7 +191,8 @@ export default function Home() {
                     <th className="text-left py-2 pr-4 font-medium text-muted-foreground">Property</th>
                     <th className="text-left py-2 pr-4 font-medium text-muted-foreground">Amount</th>
                     <th className="text-left py-2 pr-4 font-medium text-muted-foreground">Due</th>
-                    <th className="text-left py-2 font-medium text-muted-foreground">Status</th>
+                    <th className="text-left py-2 pr-4 font-medium text-muted-foreground">Status</th>
+                    <th className="text-left py-2 font-medium text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -174,7 +202,19 @@ export default function Home() {
                       <td className="py-2 pr-4 text-muted-foreground">{m.property_address}</td>
                       <td className="py-2 pr-4">${Number(m.amount).toFixed(2)}</td>
                       <td className="py-2 pr-4">{m.due_date}</td>
-                      <td className="py-2"><StatusBadge status={m.status} /></td>
+                      <td className="py-2 pr-4"><StatusBadge status={m.status} /></td>
+                      <td className="py-2">
+                        {m.status !== 'paid_on_time' && m.status !== 'paid_late' && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={payingMortgage[m.mortgage_id]}
+                            onClick={() => handleMarkMortgagePaid(m)}
+                          >
+                            {payingMortgage[m.mortgage_id] ? 'Saving…' : 'Mark Paid'}
+                          </Button>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
